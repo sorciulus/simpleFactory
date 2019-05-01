@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of SimpleFactoryTest.
+ * This file is part of SimpleFactory.
  *
  * (c) Corrado Ronci <sorciulus@gmail.com>
  *
@@ -29,7 +29,7 @@ class SimpleFactoryTest extends TestCase
         $object->setName('TestPublisher');
         $this->assertInstanceOf(Objects\Publisher::class, $object->make());
     }
-    
+
     public function testFactoryPublisherValidatesArgsForMagicMethods()
     {
         $object = new SimpleFactory(Objects\Publisher::class);
