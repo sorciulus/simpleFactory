@@ -1,3 +1,6 @@
+Simple Factory
+=======================
+
 This library has been designed to make it easy to generate value objects. You can set the parameters of the object without knowing in what order it is passed to the constructor. This library will be useful if you have so many parameters to pass to the constructor.
 
 ## Installation
