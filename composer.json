@@ -1,0 +1,27 @@
+{
+    "name": "sorciulus/simple-factory",
+    "description": "This library create simple value object by config",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^8.2@dev"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Corrado Ronci",
+            "email": "sorciulus@gmail.com"
+        }
+    ],
+    "minimum-stability": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "SimpleFactory\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SimpleFactory\\Tests\\": "tests/",
+            "SimpleFactory\\Tests\\Objects\\": "tests/Objects"
+        }
+    }
+}
