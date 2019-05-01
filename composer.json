@@ -1,6 +1,6 @@
 {
     "name": "sorciulus/simple-factory",
-    "description": "This library create simple value object by config",
+    "description": "This library generate object from class name",
     "keywords": ["factory", "value", "object"],
     "type": "library",
     "require-dev": {
