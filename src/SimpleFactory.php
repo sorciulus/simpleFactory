@@ -164,9 +164,11 @@ class SimpleFactory
                 continue;
             }
 
-            if (class_exists($arg->getType()->getName())) {
-                $parameters[$arg->getName()] = (new self($arg->getType()->getName()))->make();
-                continue;
+            if (!is_null($arg->getType())) {
+                if (class_exists($arg->getType()->getName())) {
+                    $parameters[$arg->getName()] = (new self($arg->getType()->getName()))->make();
+                    continue;
+                }
             }
 
             $parameters[$arg->getName()] = null;
