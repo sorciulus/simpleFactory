@@ -125,6 +125,17 @@ class SimpleFactory
     }
 
     /**
+     * This method create self class by static function
+     *
+     * @param string $object
+     * @return self
+     */
+    public static function create(string $object)
+    {
+        return new self($object);
+    }
+
+    /**
      * Reflection Class
      *
      * @return void

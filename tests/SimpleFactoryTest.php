@@ -86,4 +86,10 @@ class SimpleFactoryTest extends TestCase
         $object = new SimpleFactory(Objects\Book::class);
         $this->assertInstanceOf(Objects\Book::class, $object->make());
     }
+
+    public function testFactoryStaticCreateFunctionAssertTrue()
+    {
+        $object = SimpleFactory::create(Objects\Book::class);
+        $this->assertInstanceOf(Objects\Book::class, $object->make());
+    }
 }
