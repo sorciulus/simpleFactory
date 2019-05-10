@@ -60,7 +60,7 @@ class SimpleFactory
      * @param object $object
      * @return self
      */
-    public function with(object $object) : self
+    public function with($object) : self
     {
         if (!$object instanceof $this->class) {
             throw new \InvalidArgumentException(\sprintf('The object class must be instance of %s', $this->class));
@@ -90,8 +90,7 @@ class SimpleFactory
     public function __call($name, $arguments) : self
     {
         if (strpos($name, 'set') > -1) {
-            $param = strtolower(str_replace('set', '', $name));
-            $reflectionParam = null;
+            $param = lcfirst(str_replace('set', '', $name));
             foreach ($this->reflactionArgsClass as $arg) {
                 if ($arg->getName() === $param) {
                     if ($arg->hasType()) {
@@ -112,13 +111,11 @@ class SimpleFactory
                 }
             }
 
-            if (is_null($reflectionParam)) {
+            if (!isset($reflectionParam)) {
                 throw new \BadMethodCallException(\sprintf('The parameter %s of %s class doesn\'t exist', $param, $this->class));
             }
-            
-            if (!is_null($reflectionParam)) {
-                $this->parameters[$param] = $reflectionParam;
-            }
+                        
+            $this->parameters[$param] = $reflectionParam;
         }
 
         return $this;
@@ -148,9 +145,8 @@ class SimpleFactory
 
     /**
      * This method prepare parameter of reflection class
-     * for new instance. By default set paramter of null,
-     * if parameter has class try to set parameter to empty
-     * class instance.
+     * for new instance. If parameter
+     * has class try to set parameter to empty class instance
      * If parameter has changed replace parameter with new value.
      *
      * @return array
@@ -158,6 +154,11 @@ class SimpleFactory
     private function setInstanceParameters() : array
     {
         $parameters = [];
+        if (count($this->reflactionArgsClass) !== count($this->parameters)) {
+            throw new \ArgumentCountError(
+                \sprintf('Arguments to class %s exactly expected %s, passed %s', $this->class, count($this->reflactionArgsClass), count($this->parameters))
+            );            
+        }
         foreach ($this->reflactionArgsClass as $arg) {
             if (\array_key_exists($arg->getName(), $this->parameters)) {
                 $parameters[$arg->getName()] = $this->parameters[$arg->getName()];
@@ -170,10 +171,8 @@ class SimpleFactory
                     continue;
                 }
             }
-
-            $parameters[$arg->getName()] = null;
         }
-
+    
         return $parameters;
     }
 

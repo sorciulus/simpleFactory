@@ -14,6 +14,7 @@ namespace SimpleFactory\Tests;
 use PHPUnit\Framework\TestCase;
 use SimpleFactory\SimpleFactory;
 use SimpleFactory\Tests\Objects;
+use SimpleFactory\Tests\Objects\Book;
 
 class SimpleFactoryTest extends TestCase
 {
@@ -47,15 +48,30 @@ class SimpleFactoryTest extends TestCase
     }
 
     public function testFactoryBookValidatesObjectForMagicMethods()
+    {        
+        $object = new SimpleFactory(Objects\Book::class);
+        $book   = $object
+            ->setYear(2001)
+            ->setTitle('Code')
+            ->setDescription('Description')
+            ->setRating(8.2)
+            ->setGenre('IT')
+            ->setPublisher(new Objects\Publisher('TestPublisher'))
+            ->make()
+        ;             
+        $this->assertInstanceOf(Objects\Publisher::class, $book->getPublisher());
+    }
+    
+    public function testFactoryBookValidatesObjectForMagicMethodsException()
     {
+        $this->expectException(\TypeError::class);
         $object = new SimpleFactory(Objects\Book::class);
         $object
             ->setPublisher(new Objects\Publisher('TestPublisher'))
             ->setYear(2001)
             ->setRating(8.1)
         ;
-        $book = $object->make();
-        $this->assertInstanceOf(Objects\Publisher::class, $book->getPublisher());
+        $object->make();
     }
 
     public function testFactorySetWrogParameterBadMethodCallException()
@@ -81,15 +97,17 @@ class SimpleFactoryTest extends TestCase
         $object->with($publisher);
     }
 
-    public function testFactoryResolveInjectionDependecyAssertTrue()
-    {
-        $object = new SimpleFactory(Objects\Book::class);
-        $this->assertInstanceOf(Objects\Book::class, $object->make());
-    }
-
     public function testFactoryStaticCreateFunctionAssertTrue()
     {
         $object = SimpleFactory::create(Objects\Book::class);
+        $object
+            ->setYear(2001)
+            ->setTitle('Code')
+            ->setDescription('Description')
+            ->setRating(8.2)
+            ->setGenre('IT')
+            ->setPublisher(new Objects\Publisher('TestPublisher'))            
+        ;
         $this->assertInstanceOf(Objects\Book::class, $object->make());
     }
 }

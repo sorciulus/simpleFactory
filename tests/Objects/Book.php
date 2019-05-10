@@ -51,6 +51,7 @@ class Book
      * @param string|null $description
      * @param integer|null $year
      * @param string|null $genre
+     * @param float|null $rating
      * @param Publisher $publisher
      */
     public function __construct(?string $title, ?string $description, ?int $year, ?string $genre, ?float $rating, Publisher $publisher)
