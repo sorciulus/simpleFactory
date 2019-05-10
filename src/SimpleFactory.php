@@ -21,6 +21,13 @@ class SimpleFactory
     private $class;
 
     /**
+     * The flag to set default paramter to null
+     *
+     * @var bool
+     */
+    private $configDefaultParameter = false;
+    
+    /**
      * The class reflaction
      *
      * @var ReflectionClass
@@ -34,13 +41,16 @@ class SimpleFactory
      */
     private $parameters = [];
 
-    public function __construct(string $object)
+    public function __construct(string $object, bool $defaultParamter=null)
     {
         if (!class_exists($object)) {
             throw new \InvalidArgumentException(\sprintf('The class %s not exits', $object));
         }
         
         $this->class = $object;
+        if (!is_null($defaultParamter)) {
+            $this->configDefaultParameter = $defaultParamter;
+        }
         $this->makeReflection();
     }
 
@@ -154,7 +164,7 @@ class SimpleFactory
     private function setInstanceParameters() : array
     {
         $parameters = [];
-        if (count($this->reflactionArgsClass) !== count($this->parameters)) {
+        if (!$this->configDefaultParameter and count($this->reflactionArgsClass) !== count($this->parameters)) {
             throw new \ArgumentCountError(
                 \sprintf('Arguments to class %s exactly expected %s, passed %s', $this->class, count($this->reflactionArgsClass), count($this->parameters))
             );            
@@ -170,6 +180,10 @@ class SimpleFactory
                     $parameters[$arg->getName()] = (new self($arg->getType()->getName()))->make();
                     continue;
                 }
+            }
+
+            if ($this->configDefaultParameter === true) {
+                $parameters[$arg->getName()] = null;
             }
         }
     

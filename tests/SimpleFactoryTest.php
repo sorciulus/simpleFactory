@@ -110,4 +110,10 @@ class SimpleFactoryTest extends TestCase
         ;
         $this->assertInstanceOf(Objects\Book::class, $object->make());
     }
+
+    public function testFactoryFillParamterToNullAssertTrue()
+    {
+        $publisher = (new SimpleFactory(Objects\Publisher::class, true))->make();
+        $this->assertInstanceOf(Objects\Publisher::class, $publisher);
+    }
 }
