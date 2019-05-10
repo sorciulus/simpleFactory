@@ -76,14 +76,11 @@ class SimpleFactory
             throw new \InvalidArgumentException(\sprintf('The object class must be instance of %s', $this->class));
         }
 
-        foreach ($this->reflactionClass->getMethods() as $method) {
-            $param = strtolower(str_replace('get', '', $method->getName()));
-            foreach ($this->reflactionArgsClass as $arg) {
-                if ($arg->getName() === $param) {
-                    $value = $object->{$method->getName()}();
-                    $this->parameters[$param] = $value;
-                }
-            }
+        $reflactionWithClass = new \ReflectionClass($object);
+        
+        foreach ($reflactionWithClass->getProperties() as $property) {
+            $property->setAccessible(true);
+            $this->parameters[$property->getName()] = $property->getValue($object);
         }
 
         return $this;
