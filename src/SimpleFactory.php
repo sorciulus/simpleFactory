@@ -135,11 +135,12 @@ class SimpleFactory
      * This method create self class by static function
      *
      * @param string $object
+     * @param bool $defaultParamter
      * @return self
      */
-    public static function create(string $object)
+    public static function create(string $object, bool $defaultParamter=null)
     {
-        return new self($object);
+        return new self($object, $defaultParamter);
     }
 
     /**
