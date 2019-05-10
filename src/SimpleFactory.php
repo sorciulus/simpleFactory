@@ -11,6 +11,8 @@
 
 namespace SimpleFactory;
 
+use ReflectionParameter;
+
 class SimpleFactory
 {
     /**
@@ -97,34 +99,23 @@ class SimpleFactory
     public function __call($name, $arguments) : self
     {
         if (strpos($name, 'set') > -1) {
-            $param = lcfirst(str_replace('set', '', $name));
-            $paramFind = false;
-            foreach ($this->reflactionArgsClass as $arg) {
-                if ($arg->getName() === $param) {
-                    $paramFind = true;
-                    if ($arg->hasType()) {
-                        if (gettype(current($arguments)) === 'object') {
-                            $class = $arg->getType()->getName();
-                            if (current($arguments) instanceof $class) {
-                                $reflectionParam = current($arguments);
-                                continue;
-                            }
-                        }
-                        $argType = $this->normalizeTypeReflection($arg->getType()->getName());
-                        if (gettype(current($arguments)) !== $argType) {
-                            throw new \InvalidArgumentException(\sprintf('The parameter %s of %s class must be of the type %s', $param, $this->class, $argType));
-                        }
+            $arg   = lcfirst(str_replace('set', '', $name));
+            $param = $this->findParam($arg);            
+            if ($param->hasType()) {
+                if (gettype(current($arguments)) === 'object') {
+                    $class = $param->getType()->getName();
+                    if (current($arguments) instanceof $class) {
+                        $this->parameters[$param->getName()] = current($arguments);
+                        return $this;
                     }
-
-                    $reflectionParam = current($arguments);
+                }
+                $argType = $this->normalizeTypeReflection($param->getType()->getName());
+                if (gettype(current($arguments)) !== $argType) {
+                    throw new \InvalidArgumentException(\sprintf('The parameter %s of %s class must be of the type %s', $param, $this->class, $argType));
                 }
             }
-
-            if (!paramFind) {
-                throw new \BadMethodCallException(\sprintf('The parameter %s of %s class doesn\'t exist', $param, $this->class));
-            }
-                        
-            $this->parameters[$param] = $reflectionParam;
+            
+            $this->parameters[$param->getName()] = current($arguments);            
         }
 
         return $this;
@@ -151,6 +142,25 @@ class SimpleFactory
     {
         $this->reflactionClass = new \ReflectionClass($this->class);
         $this->reflactionArgsClass = $this->reflactionClass->getConstructor()->getParameters();
+    }
+
+    /**
+     * This function check param to
+     * arguments of reflection class
+     *
+     * @param string $param
+     * @return ReflectionParameter
+     * @throws BadMethodCallException
+     */
+    private function findParam(string $param) : ReflectionParameter
+    {
+        foreach ($this->reflactionArgsClass as $arg) {
+            if ($arg->getName() === $param) {
+                return $arg;
+            }
+        }
+
+        throw new \BadMethodCallException(\sprintf('The parameter %s of %s class doesn\'t exist', $param, $this->class));        
     }
 
     /**
