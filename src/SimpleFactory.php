@@ -98,8 +98,10 @@ class SimpleFactory
     {
         if (strpos($name, 'set') > -1) {
             $param = lcfirst(str_replace('set', '', $name));
+            $paramFind = false;
             foreach ($this->reflactionArgsClass as $arg) {
                 if ($arg->getName() === $param) {
+                    $paramFind = true;
                     if ($arg->hasType()) {
                         if (gettype(current($arguments)) === 'object') {
                             $class = $arg->getType()->getName();
@@ -118,7 +120,7 @@ class SimpleFactory
                 }
             }
 
-            if (!isset($reflectionParam)) {
+            if (!paramFind) {
                 throw new \BadMethodCallException(\sprintf('The parameter %s of %s class doesn\'t exist', $param, $this->class));
             }
                         
