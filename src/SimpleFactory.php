@@ -216,6 +216,8 @@ class SimpleFactory
                 return 'integer';
             case 'float':
                 return 'double';
+            case 'bool':
+                return 'boolean';    
             default:
                 return $type;
         }
