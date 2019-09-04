@@ -115,5 +115,6 @@ class SimpleFactoryTest extends TestCase
     {
         $publisher = (new SimpleFactory(Objects\Publisher::class, true))->make();
         $this->assertInstanceOf(Objects\Publisher::class, $publisher);
+        $this->assertEquals(null, $publisher->getName());
     }
 }
