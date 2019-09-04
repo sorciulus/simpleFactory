@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ef10945-4d2f-494e-bbe9-c193656837cd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/SimpleFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/SimpleFactory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/SimpleFactoryTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/SimpleFactoryTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -91,7 +91,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1567616151282</updated>
-      <workItem from="1567616152644" duration="651000" />
+      <workItem from="1567616152644" duration="776000" />
     </task>
     <servers />
   </component>
