@@ -111,7 +111,9 @@ class SimpleFactory
                 }
                 $argType = $this->normalizeTypeReflection($param->getType()->getName());
                 if (gettype(current($arguments)) !== $argType) {
-                    throw new \InvalidArgumentException(\sprintf('The parameter %s of %s class must be of the type %s', $param, $this->class, $argType));
+                    if (is_null(current($arguments)) && !$param->allowsNull()) {
+                        throw new \InvalidArgumentException(\sprintf('The parameter %s of %s class must be of the type %s', $param, $this->class, $argType));
+                    }
                 }
             }
             
